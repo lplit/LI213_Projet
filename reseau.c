@@ -473,20 +473,23 @@ Reseau * recreateReseau(Chaines *C)
 
 void chaineCoordMinMax(Chaines* C, double* xmin, double* ymin, double* xmax, double* ymax) 
 {
-  int i=0, end = C->nbChaines;
-  for (i=0 ; i<end ; i++) {
-    CellChaine * cc = C->chaines; 
-    CellPoint * pt = cc->points;
-    while (pt != NULL) {
-      if (DB==1) printf("Xmin %.2f Ymin %.2f Xmax %.2f Ymax %.2f PtX %.2f PtY %.2f\n", *xmin, *ymin, *xmax, *ymax, pt->x, pt->y);
-      if (*xmin > pt->x) *xmin=pt->x; 
-      if (*ymin > pt->y) *ymin=pt->y; 
-      if (*xmax < pt->x) *xmax=pt->x; 
-      if (*ymax < pt->y) *ymax=pt->y;
-      pt=pt->suiv;
+  if (C!=NULL) {
+    int i=0, end = C->nbChaines;
+    if (DB==1) printf("End = %d\n", end);
+    for (i=0 ; i<end ; i++) {
+      CellChaine * cc = C->chaines; 
+      CellPoint * pt = cc->points;
+      while (pt != NULL) {
+	if (DB==1) printf("Xmin %.2f Ymin %.2f Xmax %.2f Ymax %.2f PtX %.2f PtY %.2f\n", *xmin, *ymin, *xmax, *ymax, pt->x, pt->y);
+	if (*xmin > pt->x) *xmin=pt->x; 
+	if (*ymin > pt->y) *ymin=pt->y; 
+	if (*xmax < pt->x) *xmax=pt->x; 
+	if (*ymax < pt->y) *ymax=pt->y;
+	pt=pt->suiv;
+      }
+      cc=cc->suiv;
     }
-    cc=cc->suiv;
-  }
+  } else printf("\n\n--> Chaines is NULL. ABORT.\n\n");
 }
 
 Reseau * hashFromFile(FILE * f) 
@@ -549,3 +552,4 @@ ArbreQuat* creerArbreQuat(double xc, double yc, double coteX, double coteY)
     perror("[creerArbreQuat] Error allocating memory, abort.\n"); exit(EXIT_FAILURE); 
   }  
 }
+
