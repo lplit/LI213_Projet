@@ -13,7 +13,7 @@ void p_menu_gen ()
   printf("4: Create hash from all files and save output\n");
   printf("------ Part 3 -----\n");
   printf("----- Quadtre -----\n");
-  printf("5: Not yet implemented\n");
+  printf("5: Quadtree\n");
   printf("------ Part 4 -----\n");
   printf("----- Randoms -----\n");
   printf("6: Generate random\n");
@@ -217,6 +217,7 @@ void chainesMenu ()
       printf("minX %.2f maxX %.2f minY %.2f maxY %.2f\n", minX, maxX, minY, maxY);
       chaineCoordMinMax(tr, &minX, &minY, &maxX, &maxY);
       printf("minX %.2f maxX %.2f minY %.2f maxY %.2f\n", minX, maxX, minY, maxY);
+      ArbreQuat * a = creerArbreQuat(5., 5., 10, 10);
       break;
 
     case 6 : // Add random points

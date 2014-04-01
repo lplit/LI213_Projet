@@ -34,7 +34,7 @@ CellCommodite *commodites;
 typedef struct hachage{
   CellNoeud **tab;
   int size;
-}Hachage;
+} Hachage;
 
  /* Arbre quaternaire contenant les noeuds du reseau */
  typedef struct arbreQuat{ 
@@ -161,4 +161,8 @@ void hashAllFiles();
  */
 ArbreQuat* creerArbreQuat(double xc, double yc, double coteX, double coteY);
 
+/**
+ * Returns 1 for SW, 2 for SE, 3 for NW, 4 for NE
+ */
+int whichQ (Noeud * n, ArbreQuat * parent);
 #endif

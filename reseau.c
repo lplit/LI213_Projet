@@ -553,3 +553,88 @@ ArbreQuat* creerArbreQuat(double xc, double yc, double coteX, double coteY)
   }  
 }
 
+int whichQ (Noeud * n, ArbreQuat * parent) { 
+  double // Lots of handles
+    xcen = n->x, 
+    ycen = n->y, 
+    px = parent->xc, 
+    py = parent->yc, 
+    pw = parent->coteX, 
+    ph = parent->coteY;
+  if ((xcen<px) && (ycen<py)) return 1;        // SW
+  else if ((xcen>=px && ycen<py)) return 2;    // SE
+  else if ((xcen<px && ycen >=py)) return 3;   // NW
+  else return 4;                               // NE
+}
+
+
+ArbreQuat * insererNoeudArbre ( Noeud * n, ArbreQuat * a, ArbreQuat * parent) 
+{
+  ArbreQuat * tmp, *ret = parent;
+  double // Lots of handles
+    nx = n->x,
+    ny = n->y, 
+    xcen = 0., 
+    ycen = 0., 
+    px = parent->xc, 
+    py = parent->yc, 
+    pw = parent->coteX, 
+    ph = parent->coteY;
+  if (a == NULL) {
+    if (xcen<px && ycen<py) { // SW
+      if (DB==1) printf("Inserting SW\n");
+      xcen = px-((pw-px)/2);
+      ycen = (ph-py)/2;
+      tmp = creerArbreQuat(xcen, ycen, pw/2, ph/2);
+      tmp->noeud=n;
+      ret->so=tmp;
+    }
+    else if (xcen>=px && ycen<py) { // SE
+      if (DB==1) printf("Inserting SE\n");
+      xcen = px+((pw-px)/2);
+      ycen = py-((ph-py)/2);
+      tmp = creerArbreQuat(xcen, ycen, pw/2, ph/2);
+      tmp->noeud=n;
+      ret->se=tmp;
+    }
+    else if (xcen<px && ycen >=py) { // NW
+      if (DB==1) printf("Inserting NW\n");
+      xcen = px-((pw-px)/2);
+      ycen = py+((ph-py)/2);
+      tmp = creerArbreQuat(xcen, ycen, pw/2, ph/2);
+      tmp->noeud=n;
+      ret->no=tmp;
+    }
+    else { // NE
+      if (DB==1) printf("Inserting NE\n");
+      xcen = px+((pw-px)/2);
+      ycen = py+((ph-py)/2);
+      tmp = creerArbreQuat(xcen, ycen, pw/2, ph/2);
+      tmp->noeud=n;
+      ret->ne=tmp;
+    }
+    return ret;
+  } else { switch (whichQ(n, parent)) { // Two cases in each switch - Leaf and Inside Cell. Hereforth a!=NULL
+      ArbreQuat * tmp=a;
+    case 1 : // SW
+      if (a->so != NULL) { // Inside cell
+	
+      } else { // Leaf 
+	tmp->so=a;
+      }
+      break;
+      
+    case 2 : // SE
+      break; 
+      
+    case 3 : // NW
+      break; 
+      
+    case 4: // NE
+      break;
+      
+    default : 
+      printf("[%s:%d] Something went wrong!\n", __func__, __LINE__);
+    }
+  }
+}
