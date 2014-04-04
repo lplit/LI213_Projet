@@ -38,10 +38,12 @@ int hasLeft(Tas *t, int i);
 int miniSon(Tas *t, int i);
 void descendre(Tas *t, int i);
 void insertTas(Tas *t, Element * add);
-Element * elMin(Tas *t);
-
+Element * delMin(Tas *t);
+void delEl(Tas *t, int i); 
+Tas * newTas(int size); 
+Element * newElt(int i, double dist); 
+void printElt(Element * e); 
+void printTas(Tas *t); 
+Element * findElt(Tas * t, int i); 
 
 #endif
-
-
-
