@@ -165,4 +165,14 @@ ArbreQuat* creerArbreQuat(double xc, double yc, double coteX, double coteY);
  * Returns 1 for SW, 2 for SE, 3 for NW, 4 for NE
  */
 int whichQ (Noeud * n, ArbreQuat * parent);
+
+/**
+ * Inserts n into Quadtree a, parent is used to set dimensions for a in case it's NULL.
+ */
+ArbreQuat * insererNoeudArbre ( Noeud * n, ArbreQuat * a, ArbreQuat * parent);
+
+/**
+ * Returns the Noeud corresponding to 'pt' coordonates. Creates it if non existant.
+ */
+Noeud * chercherNoeudArbre(CellPoint * pt, Reseau * R, ArbreQuat ** aptr, ArbreQuat * parent);
 #endif

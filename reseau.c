@@ -614,27 +614,61 @@ ArbreQuat * insererNoeudArbre ( Noeud * n, ArbreQuat * a, ArbreQuat * parent)
       ret->ne=tmp;
     }
     return ret;
-  } else { switch (whichQ(n, parent)) { // Two cases in each switch - Leaf and Inside Cell. Hereforth a!=NULL
+  } else { 
+    switch (whichQ(n, parent)) { // Two cases in each switch - Leaf and Inside Cell. Hereforth a!=NULL
       ArbreQuat * tmp=a;
     case 1 : // SW
-      if (a->so != NULL) { // Inside cell
-	
+      if (a->so != NULL) { // Inside cell, meaning there's already something in the cell. Create new tree, insert newand  old one in.
+	Noeud * nt = a->so->noeud;
+	tmp->so=insererNoeudArbre(n, tmp->so, tmp);
+	tmp->so=insererNoeudArbre(nt, tmp->so, tmp);
       } else { // Leaf 
-	tmp->so=a;
+	tmp->so=insererNoeudArbre(n, tmp->so, tmp);
       }
       break;
       
     case 2 : // SE
+      if (a->se != NULL) {
+	Noeud * nt = a->se->noeud;
+	tmp->se=insererNoeudArbre(n, tmp->se, tmp);
+	tmp->se=insererNoeudArbre(nt, tmp->se, tmp);
+      } else { // Leaf
+	tmp->se=insererNoeudArbre(n, tmp->se, tmp);
+      }
       break; 
       
     case 3 : // NW
+      if (a->no != NULL) {
+	Noeud * nt = a->so->noeud;
+	tmp->so=insererNoeudArbre(n, tmp->so, tmp);
+	tmp->so=insererNoeudArbre(nt, tmp->so, tmp);
+      } else { 
+	tmp->no=insererNoeudArbre(n, tmp->se, tmp);
+      }
       break; 
       
     case 4: // NE
+      if (a->ne != NULL) { 
+	Noeud * nt = a->so->noeud;
+	tmp->so=insererNoeudArbre(n, tmp->so, tmp);
+	tmp->so=insererNoeudArbre(nt, tmp->so, tmp);
+      } else { 
+	tmp->ne=insererNoeudArbre(n, tmp->ne, tmp);
+      }
       break;
       
     default : 
       printf("[%s:%d] Something went wrong!\n", __func__, __LINE__);
     }
   }
+  return tmp;
 }
+
+Noeud * chercherNoeudArbre(CellPoint * pt, Reseau * R, ArbreQuat ** aptr, ArbreQuat * parent)
+{
+
+}
+
+  /*  #1 Check if not empty
+      #2 Check coods 
+      #3 Return or Recursive call  */
