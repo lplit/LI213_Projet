@@ -639,7 +639,7 @@ ArbreQuat * insererNoeudArbre ( Noeud * n, ArbreQuat * a, ArbreQuat * parent)
       
     case 3 : // NW
       if (a->no != NULL) {
-	Noeud * nt = a->so->noeud;
+	Noeud * nt = a->no->noeud;
 	tmp->so=insererNoeudArbre(n, tmp->so, tmp);
 	tmp->so=insererNoeudArbre(nt, tmp->so, tmp);
       } else { 
@@ -649,7 +649,7 @@ ArbreQuat * insererNoeudArbre ( Noeud * n, ArbreQuat * a, ArbreQuat * parent)
       
     case 4: // NE
       if (a->ne != NULL) { 
-	Noeud * nt = a->so->noeud;
+	Noeud * nt = a->ne->noeud;
 	tmp->so=insererNoeudArbre(n, tmp->so, tmp);
 	tmp->so=insererNoeudArbre(nt, tmp->so, tmp);
       } else { 
@@ -666,9 +666,64 @@ ArbreQuat * insererNoeudArbre ( Noeud * n, ArbreQuat * a, ArbreQuat * parent)
 
 Noeud * chercherNoeudArbre(CellPoint * pt, Reseau * R, ArbreQuat ** aptr, ArbreQuat * parent)
 {
-
+  Noeud * nd = createNoeud(0, pt->x, pt->y);
+  if ( *aptr==NULL) { //1er cas
+    return nd;
+  }
+  if ( (*aptr)->noeud !=NULL) {// Feuille
+    if (pt->x == (*aptr)->noeud->x && pt->y == (*aptr)->noeud->y) {
+      return (*aptr)->noeud;
+    } else { // 
+      return (*aptr)->noeud;
+    }
+  }
+  return (*aptr)->noeud;
 }
 
-  /*  #1 Check if not empty
-      #2 Check coods 
-      #3 Return or Recursive call  */
+Reseau * recreeReseauArbre(Chaines * C) 
+{
+  Reseau * r;
+  return r;
+}
+
+Reseau * qtreeFromFile(FILE * f) 
+{
+  Chaines * ch = lectureChaine(f);
+  Reseau * a = recreeReseauArbre(ch);
+  return a;
+}
+
+void qtreeAllFiles() 
+{
+  DIR *d;
+  struct dirent *dir;
+  clock_t
+    start,
+    end;
+  double cpu_time;
+  FILE * f_time = fopen("./Data/Times/QTree.txt", "w");
+  d= opendir("./Data/Chain/");
+  if (d!=NULL) {
+    while ((dir = readdir(d)) != NULL) 
+      if (!isalnum(dir->d_name[0]))
+	continue;
+      else 
+	{
+	  char chain[128], times[128];
+	  sprintf(chain, "./Data/Chain/%s", dir->d_name);
+	  FILE * f_ch = fopen(chain, "r");
+	  if (DB==1) printf("Hashing %s...\n", chain); // Verbose
+	  Chaines * ch = lectureChaine(f_ch); // Before hashing
+	  start = clock(); 
+	  Reseau * rs = qtreeFromFile(f_ch);
+	  end=clock();
+	  cpu_time = ((double)(end-start))/CLOCKS_PER_SEC;
+	  printf("QuadTree file %s in %f\n", dir->d_name, cpu_time);
+	  fprintf(f_time, "%d %f\n", comptePointsTotal(ch), cpu_time);
+	  fclose(f_ch);
+	}
+    fclose(f_time);
+    closedir(d);
+  }
+  printf("Output available in ./Data/Times/Hash.txt");
+}

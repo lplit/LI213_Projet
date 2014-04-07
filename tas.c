@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 int pere(int i) 
 {
   return i/2;
@@ -93,7 +92,7 @@ void insertTas(Tas *t, Element * add)
     return;
   }
   t->nbEl++; 
-  t->tab[t->nbEl]=add; 
+   t->tab[t->nbEl]=add; 
   t->indiceNoeud[add->num]=t->nbEl;
   monter(t, t->nbEl);
 }
@@ -166,4 +165,3 @@ Element * findElt(Tas * t, int i)
     exit(EXIT_FAILURE);
   }
 }
-
